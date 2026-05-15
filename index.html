@@ -1,0 +1,102 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Learning</title>
+    
+    <!-- Google Translate Script -->
+<script>
+function googleTranslateElementInit() {
+ new google.translate.TranslateElement(
+ {
+   pageLanguage:'en',
+   includedLanguages:'en,hi,es,fr,de,it',
+   autoDisplay:false
+ },
+ 'google_translate_element'
+ );
+}
+</script>
+
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+    
+    <style>
+        /* Google Translate ke default elements ko hide karna */
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+        body {
+            top: 0px !important;
+        }
+       
+        #google_translate_element {
+            display: none;
+        }
+        /* Powered by Google ko hide karna */
+        .goog-logo-link {
+            display: none !important;
+        }
+
+
+
+
+
+
+.goog-te-gadget{
+font-size:0 !important;
+}
+
+.goog-te-combo{
+display:none;
+}
+
+
+
+
+/* top google translate bar hide */
+iframe.goog-te-banner-frame{
+display:none !important;
+visibility:hidden !important;
+height:0 !important;
+}
+
+/* new translate toolbar hide */
+.skiptranslate{
+display:none !important;
+}
+
+/* page push down stop */
+body{
+top:0 !important;
+position:static !important;
+}
+
+/* google floating bar hide */
+.goog-te-banner-frame.skiptranslate{
+display:none !important;
+}
+
+/* optional google translate bubble hide */
+#goog-gt-tt,
+.goog-te-balloon-frame{
+display:none !important;
+}
+
+
+
+        .goog-te-gadget span {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+     <div id="google_translate_element"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script src="https://mvplab.ai/widget.js" data-site="demo"></script>
+  </body>
+</html>
