@@ -201,7 +201,7 @@ export default function Signup({ setIsLogin }) {
         {/* Left Side - Signup Form */}
         <div className="signup-form-section">
           <div className="signup-header">
-            <h1>Create Your Account 🚀</h1>
+            <h1>Createa Your Account 🚀</h1>
             <p>Join 50,000+ students learning AI</p>
           </div>
 
