@@ -164,7 +164,7 @@ export default function Profile() {
         {isEditing && (
           <div className="edit-form-wrapper">
             <div className="edit-card">
-              <h2>Edit Profile</h2>
+              <h2>Edit Profiles</h2>
 
               <div className="form-group">
                 <label>Full Name</label>
