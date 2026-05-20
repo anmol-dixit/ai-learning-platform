@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
 import { NavLink } from "react-router-dom";
-import { signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider, githubProvider } from '../firebase/config'; // ✅ githubProvider add
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider, githubProvider } from "../firebase/config"; // ✅ githubProvider add
 
 export default function Signup({ setIsLogin }) {
   const navigate = useNavigate();
@@ -86,114 +86,204 @@ export default function Signup({ setIsLogin }) {
   };
 
   // ✅ GOOGLE LOGIN (Already Working)
-  const handleGoogleSignup = async () => {
-    try {
-      setLoading(true);
-      
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-      
-      console.log("Google Login Successful!");
-      console.log("User Name:", user.displayName);
-      console.log("User Email:", user.email);
-      
-      if (setIsLogin) {
-        setIsLogin(true);
-      }
+  // const handleGoogleSignup = async () => {
+  //   try {
+  //     setLoading(true);
 
-      localStorage.setItem('user', JSON.stringify({
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        uid: user.uid,
-        provider: 'google'
-      }));
+  //     const result = await signInWithPopup(auth, googleProvider);
+  //     const user = result.user;
 
-      alert(
-        `🎉 Welcome ${user.displayName}!\n\n✅ Google login successful!\n\nStart your AI learning journey now! 🚀`
-      );
+  //     console.log("Google Login Successful!");
+  //     console.log("User Name:", user.displayName);
+  //     console.log("User Email:", user.email);
 
-      navigate("/");
-      
-    } catch (error) {
-      console.error("Google Sign-In Error:", error);
-      
-      if (error.code === 'auth/popup-closed-by-user') {
-        alert("⚠️ Popup closed! Please try again.");
-      } else if (error.code === 'auth/cancelled-popup-request') {
-        alert("⚠️ Login cancelled. Please try again.");
-      } else {
-        alert(`❌ Login failed: ${error.message}`);
-      }
-    } finally {
-      setLoading(false);
+  //     if (setIsLogin) {
+  //       setIsLogin(true);
+  //     }
+
+  //     localStorage.setItem(
+  //       "user",
+  //       JSON.stringify({
+  //         name: user.displayName,
+  //         email: user.email,
+  //         photoURL: user.photoURL,
+  //         uid: user.uid,
+  //         provider: "google",
+  //       }),
+  //     );
+
+  //     alert(
+  //       `🎉 Welcome ${user.displayName}!\n\n✅ Google login successful!\n\nStart your AI learning journey now! 🚀`,
+  //     );
+
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.error("Google Sign-In Error:", error);
+
+  //     if (error.code === "auth/popup-closed-by-user") {
+  //       alert("⚠️ Popup closed! Please try again.");
+  //     } else if (error.code === "auth/cancelled-popup-request") {
+  //       alert("⚠️ Login cancelled. Please try again.");
+  //     } else {
+  //       alert(`❌ Login failed: ${error.message}`);
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // // ✅✅✅ GITHUB LOGIN - NEW FUNCTION ✅✅✅
+
+  // const handleGithubSignup = async () => {
+  //   try { 
+  //     setLoading(true);
+
+  //     const result = await signInWithPopup(auth, githubProvider);
+  //     const user = result.user;
+
+  //     if (setIsLogin) {
+  //       setIsLogin(true);
+  //     }
+
+  //     // Save user data
+  //     localStorage.setItem(
+  //       "user",
+  //       JSON.stringify({
+  //         name: user.displayName || user.email?.split("@")[0] || "GitHub User",
+  //         email: user.email || `${user.uid}@github.com`,
+  //         photoURL: user.photoURL || "/default-avatar.png",
+  //         uid: user.uid,
+  //         provider: "github",
+  //       }),
+  //     );
+
+  //     alert(
+  //       `🎉 Welcome ${user.displayName || "Developer"}!\n\n✅ GitHub login successful!\n\nStart your AI learning journey now! 🚀`,
+  //     );
+
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.error("GitHub Error:", error);
+
+  //     // ✅ Better error handling for account exists
+  //     if (error.code === "auth/account-exists-with-different-credential") {
+  //       alert(
+  //         `⚠️ Account Already Exists!\n\nThis email is already registered.\n\n✅ Solution: We'll log you in automatically!\n\nNote: You can use both Google and GitHub with the same email.`,
+  //       );
+
+  //       // Option: Automatically sign in with existing account
+  //       // You can redirect to login page or handle it differently
+  //       navigate("/");
+  //     } else if (error.code === "auth/popup-closed-by-user") {
+  //       alert("⚠️ Login popup closed! Please try again.");
+  //     } else {
+  //       alert(`❌ Login failed: ${error.message}`);
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
+
+
+
+
+
+
+  // ✅ Update handleGoogleSignup
+const handleGoogleSignup = async () => {
+  try {
+    setLoading(true);
+    
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    
+    if (setIsLogin) {
+      setIsLogin(true);
     }
-  };
 
-  // ✅✅✅ GITHUB LOGIN - NEW FUNCTION ✅✅✅
-  const handleGithubSignup = async () => {
-    try {
-      setLoading(true);
-      
-      console.log("🐙 GitHub login starting...");
-      
-      // GitHub popup open hoga
-      const result = await signInWithPopup(auth, githubProvider);
-      
-      // User details
-      const user = result.user;
-      
-      console.log("✅ GitHub Login Successful!");
-      console.log("👤 User Name:", user.displayName);
-      console.log("📧 User Email:", user.email);
-      console.log("📸 User Photo:", user.photoURL);
-      console.log("🆔 User UID:", user.uid);
-      
-      // Login state set
-      if (setIsLogin) {
-        setIsLogin(true);
-      }
+    localStorage.setItem('user', JSON.stringify({
+      name: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      uid: user.uid,
+      provider: 'google'
+    }));
 
-      // LocalStorage mein save
-      localStorage.setItem('user', JSON.stringify({
-        name: user.displayName || user.email?.split('@')[0] || 'GitHub User',
-        email: user.email || `${user.uid}@github.com`,
-        photoURL: user.photoURL || '/default-avatar.png',
-        uid: user.uid,
-        provider: 'github'
-      }));
+    alert(
+      `🎉 Welcome ${user.displayName}!\n\n✅ Login Successful!\n\nYou are now logged in! 🚀`
+    );
 
-      // Success Alert
-      alert(
-        `🎉 Welcome ${user.displayName || 'Developer'}!\n\n✅ GitHub login successful!\n\nStart your AI learning journey now! 🚀`
-      );
-
-      // Home page redirect
-      navigate("/");
-      
-    } catch (error) {
-      console.error("❌ GitHub Sign-In Error:", error);
-      console.error("Error Code:", error.code);
-      console.error("Error Message:", error.message);
-      
-      // Detailed error handling
-      if (error.code === 'auth/popup-closed-by-user') {
-        alert("⚠️ Login popup closed! Please try again.");
-      } else if (error.code === 'auth/cancelled-popup-request') {
-        alert("⚠️ Login cancelled. Please try again.");
-      } else if (error.code === 'auth/account-exists-with-different-credential') {
-        alert("⚠️ This email is already registered with Google. Please use Google login.");
-      } else if (error.code === 'auth/popup-blocked') {
-        alert("⚠️ Popup blocked by your browser! Please allow popups and try again.");
-      } else if (error.code === 'auth/operation-not-allowed') {
-        alert("⚠️ GitHub login is not enabled. Please contact support.");
-      } else {
-        alert(`❌ GitHub login failed!\n\nError: ${error.message}\n\nPlease try again.`);
-      }
-    } finally {
-      setLoading(false);
+    // ✅ Force navbar to update by reloading or navigating
+    window.location.href = '/';  // This will refresh and show profile
+    
+  } catch (error) {
+    console.error("Google Sign-In Error:", error);
+    
+    if (error.code === 'auth/popup-closed-by-user') {
+      alert("⚠️ Popup closed! Please try again.");
+    } else if (error.code === 'auth/cancelled-popup-request') {
+      alert("⚠️ Login cancelled. Please try again.");
+    } else {
+      alert(`❌ Login failed: ${error.message}`);
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
+// ✅ Update handleGithubSignup
+const handleGithubSignup = async () => {
+  try {
+    setLoading(true);
+    
+    const result = await signInWithPopup(auth, githubProvider);
+    const user = result.user;
+    
+    if (setIsLogin) {
+      setIsLogin(true);
+    }
+
+    localStorage.setItem('user', JSON.stringify({
+      name: user.displayName || user.email?.split('@')[0] || 'GitHub User',
+      email: user.email || `${user.uid}@github.com`,
+      photoURL: user.photoURL || '/default-avatar.png',
+      uid: user.uid,
+      provider: 'github'
+    }));
+
+    alert(
+      `🎉 Welcome ${user.displayName || 'Developer'}!\n\n✅ Login Successful!\n\nYou are now logged in! 🚀`
+    );
+
+    // ✅ Force navbar to update
+    window.location.href = '/';
+    
+  } catch (error) {
+    console.error("GitHub Error:", error);
+    
+    if (error.code === 'auth/account-exists-with-different-credential') {
+      alert(
+        `ℹ️ This email is already registered.\n\nYou can login with both Google and GitHub!`
+      );
+      // Still redirect to login or home
+      navigate("/login");
+    } else if (error.code === 'auth/popup-closed-by-user') {
+      alert("⚠️ Login popup closed! Please try again.");
+    } else {
+      alert(`❌ Login failed: ${error.message}`);
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
+
+
 
   return (
     <div className="signup-page">
@@ -216,7 +306,7 @@ export default function Signup({ setIsLogin }) {
               <span className="social-icon">🔍</span>
               {loading ? "Signing in..." : "Continue with Google"}
             </button>
-            
+
             {/* ✅ GitHub Button - UPDATED */}
             <button
               className="social-btn github-btn"

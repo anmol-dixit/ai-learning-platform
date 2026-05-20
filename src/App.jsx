@@ -13,6 +13,7 @@ import Blog from "./pages/Blog";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CourseDetails from "./pages/CourseDetails";
+import Profile from './pages/Profile';
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -60,6 +61,8 @@ function App() {
         <Route path="/course/:id" element={<CourseDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/profile" element={<Profile setIsLogin={setIsLogin} />} />
+        
       </Routes>
 
       <ConditionalFooter />

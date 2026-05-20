@@ -1,12 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./Navbar.css";
 
 export default function Navbar({ setIsLogin }) {
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState("en");
-
   const [isLangOpen, setIsLangOpen] = useState(false);
+
+  // ✅ NEW: Profile states
+  const [userData, setUserData] = useState(null);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   // Language options
   const languages = [
@@ -17,6 +21,14 @@ export default function Navbar({ setIsLogin }) {
     { code: "de", name: "German", flag: "🇩🇪" },
     { code: "it", name: "Italian", flag: "🇮🇹" },
   ];
+
+  // ✅ NEW: Check if user is logged in
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUserData(JSON.parse(storedUser));
+    }
+  }, []);
 
   const hideGoogleElements = () => {
     document.documentElement.style.top = "0px";
@@ -43,17 +55,14 @@ export default function Navbar({ setIsLogin }) {
       const savedLang = localStorage.getItem("selectedLanguage") || "en";
 
       if (savedLang === "en") {
-        // ✅ English → cookie remove
         document.cookie =
           "googtrans=;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC;";
       } else {
-        // ✅ Other languages → set cookie
         document.cookie = `googtrans=/en/${savedLang};path=/`;
       }
 
       if (selectField) {
         if (savedLang !== "en") {
-          // ❗ only for non-English
           selectField.value = savedLang;
           selectField.dispatchEvent(new Event("change"));
         }
@@ -90,6 +99,10 @@ export default function Navbar({ setIsLogin }) {
       if (!e.target.closest(".language-dropdown")) {
         setIsLangOpen(false);
       }
+      // ✅ NEW: Close profile dropdown on outside click
+      if (!e.target.closest(".user-profile-section")) {
+        setShowProfileDropdown(false);
+      }
     };
 
     document.addEventListener("click", handleClickOutside);
@@ -98,7 +111,7 @@ export default function Navbar({ setIsLogin }) {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-  // Function to change language
+
   const changeLanguage = (lang, retries = 10) => {
     hideGoogleElements();
 
@@ -106,19 +119,16 @@ export default function Navbar({ setIsLogin }) {
 
     if (selectField) {
       if (lang === "en") {
-        // 🔥 IMPORTANT: reset translation completely
         document.cookie =
           "googtrans=;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC;";
 
         localStorage.setItem("selectedLanguage", "en");
         setCurrentLanguage("en");
 
-        // 🔥 page reload required
         window.location.reload();
         return;
       }
 
-      // normal languages
       selectField.value = lang;
       selectField.dispatchEvent(new Event("change", { bubbles: true }));
 
@@ -136,11 +146,22 @@ export default function Navbar({ setIsLogin }) {
     }
   };
 
-  // Get current language details
   const getCurrentLanguage = () => {
     return (
       languages.find((lang) => lang.code === currentLanguage) || languages[0]
     );
+  };
+
+  // ✅ NEW: Logout function
+  const handleLogout = () => {
+    if (window.confirm("🤔 Are you sure you want to logout?")) {
+      localStorage.removeItem("user");
+      setUserData(null);
+      if (setIsLogin) setIsLogin(false);
+      setShowProfileDropdown(false);
+      alert("👋 Logged out successfully!\n\nSee you soon! 🚀");
+      navigate("/");
+    }
   };
 
   return (
@@ -204,15 +225,66 @@ export default function Navbar({ setIsLogin }) {
               </div>
             </div>
 
-            {/* Login Button */}
-            <NavLink to="/login" className="btn-login">
-              Login
-            </NavLink>
+            {/* ✅ NEW: Conditional Rendering - Login Buttons OR Profile */}
+            {userData ? (
+              // User is logged in - Show Profile
+              <div className="user-profile-section">
+                <button
+                  className="user-profile-btn"
+                  onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                >
+                  {userData.photoURL ? (
+                    <img
+                      src={userData.photoURL}
+                      alt={userData.name}
+                      className="user-profile-pic"
+                    />
+                  ) : (
+                    <div className="user-profile-placeholder">
+                      {userData.name?.charAt(0).toUpperCase() || "👤"}
+                    </div>
+                  )}
+                </button>
 
-            {/* Get Started Button */}
-            <NavLink to="/signup" className="btn-signup">
-              Get Started
-            </NavLink>
+                {/* Profile Dropdown */}
+                {showProfileDropdown && (
+                  <div className="user-profile-dropdown">
+                    <div className="profile-dropdown-header">
+                      <p className="profile-dropdown-name">{userData.name}</p>
+                      <p className="profile-dropdown-email">{userData.email}</p>
+                    </div>
+                    <div className="profile-dropdown-divider"></div>
+                    <button
+                      className="profile-dropdown-item"
+                      onClick={() => {
+                        navigate("/profile");
+                        setShowProfileDropdown(false);
+                      }}
+                    >
+                      <span className="profile-dropdown-icon">👤</span>
+                      My Profile
+                    </button>
+                    <button
+                      className="profile-dropdown-item logout-item"
+                      onClick={handleLogout}
+                    >
+                      <span className="profile-dropdown-icon">🚪</span>
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              // User not logged in - Show Login/Signup buttons
+              <>
+                <NavLink to="/login" className="btn-login">
+                  Login
+                </NavLink>
+                <NavLink to="/signup" className="btn-signup">
+                  Get Started
+                </NavLink>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -316,20 +388,45 @@ export default function Navbar({ setIsLogin }) {
           </div>
 
           <div className="mobile-divider"></div>
-          <NavLink
-            to="/login"
-            className="mobile-nav-link"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Login
-          </NavLink>
-          <NavLink
-            to="/signup"
-            className="mobile-nav-link mobile-signup"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Get Started
-          </NavLink>
+
+          {/* ✅ Mobile Profile/Login */}
+          {userData ? (
+            <>
+              <NavLink
+                to="/profile"
+                className="mobile-nav-link"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                👤 My Profile
+              </NavLink>
+              <button
+                className="mobile-nav-link logout-mobile"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleLogout();
+                }}
+              >
+                🚪 Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to="/login"
+                className="mobile-nav-link"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/signup"
+                className="mobile-nav-link mobile-signup"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Get Started
+              </NavLink>
+            </>
+          )}
         </div>
       )}
     </nav>
