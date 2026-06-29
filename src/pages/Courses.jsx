@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "./Courses.css";
+import "./courses.css";
 
 export default function Courses() {
   const [selectedCategory, setSelectedCategory] = useState("All");
