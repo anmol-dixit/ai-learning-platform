@@ -199,9 +199,9 @@ export default function Home() {
 
         <div className="hero-content">
           <div className="badge">🔥 #1 AI Learning Platform in India</div>
-          {/* <h1>Master AI & Build Your Future</h1> */}
+          <h1>Master AI & Build Your Future</h1>
 
-          <h1>Hello Anmol</h1>
+          {/* <h1>Hello Anmol</h1> */}
           <p className="hero-subtitle">
             Learn ChatGPT, Machine Learning, Automation & AI Tools
             <br />
