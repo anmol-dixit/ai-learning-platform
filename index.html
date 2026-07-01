@@ -1,101 +1,97 @@
 <!-- public/index.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AI Learning</title>
-    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Google Translate Script -->
-<script>
-function googleTranslateElementInit() {
- new google.translate.TranslateElement(
- {
-   pageLanguage:'en',
-   includedLanguages:'en,hi,es,fr,de,it',
-   autoDisplay:false
- },
- 'google_translate_element'
- );
-}
-</script>
+    <script>
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "en",
+            includedLanguages: "en,hi,es,fr,de,it",
+            autoDisplay: false,
+          },
+          "google_translate_element",
+        );
+      }
+    </script>
 
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    
-    
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <style>
-        /* Google Translate ke default elements ko hide karna */
-        .goog-te-banner-frame.skiptranslate {
-            display: none !important;
-        }
-        body {
-            top: 0px !important;
-        }
-       
-        #google_translate_element {
-            display: none;
-        }
-        /* Powered by Google ko hide karna */
-        .goog-logo-link {
-            display: none !important;
-        }
+      /* Google Translate ke default elements ko hide karna */
+      .goog-te-banner-frame.skiptranslate {
+        display: none !important;
+      }
+      body {
+        top: 0px !important;
+      }
 
+      #google_translate_element {
+        display: none;
+      }
+      /* Powered by Google ko hide karna */
+      .goog-logo-link {
+        display: none !important;
+      }
 
+      .goog-te-gadget {
+        font-size: 0 !important;
+      }
 
+      .goog-te-combo {
+        display: none;
+      }
 
+      /* top google translate bar hide */
+      iframe.goog-te-banner-frame {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+      }
 
+      /* new translate toolbar hide */
+      .skiptranslate {
+        display: none !important;
+      }
 
-.goog-te-gadget{
-font-size:0 !important;
-}
+      /* page push down stop */
+      body {
+        top: 0 !important;
+        position: static !important;
+      }
 
-.goog-te-combo{
-display:none;
-}
+      /* google floating bar hide */
+      .goog-te-banner-frame.skiptranslate {
+        display: none !important;
+      }
 
+      /* optional google translate bubble hide */
+      #goog-gt-tt,
+      .goog-te-balloon-frame {
+        display: none !important;
+      }
 
-
-
-/* top google translate bar hide */
-iframe.goog-te-banner-frame{
-display:none !important;
-visibility:hidden !important;
-height:0 !important;
-}
-
-/* new translate toolbar hide */
-.skiptranslate{
-display:none !important;
-}
-
-/* page push down stop */
-body{
-top:0 !important;
-position:static !important;
-}
-
-/* google floating bar hide */
-.goog-te-banner-frame.skiptranslate{
-display:none !important;
-}
-
-/* optional google translate bubble hide */
-#goog-gt-tt,
-.goog-te-balloon-frame{
-display:none !important;
-}
-
-
-
-        .goog-te-gadget span {
-            display: none !important;
-        }
+      .goog-te-gadget span {
+        display: none !important;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="root"></div>
-     <div id="google_translate_element"></div>
+    <div id="google_translate_element"></div>
     <script type="module" src="/src/main.jsx"></script>
     <script src="https://mvplab.ai/widget.js" data-site="demo"></script>
   </body>
